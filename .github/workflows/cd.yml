@@ -2,7 +2,7 @@ name: CD - Build & Push Docker Images
 
 on:
   push:
-    branches: [ "main" , "dev" ]
+    branches: [ "main", "dev" ]
 
 jobs:
   docker-publish:
@@ -19,10 +19,10 @@ jobs:
           password: ${{ secrets.DOCKER_PASS }}
 
       - name: Build backend image
-        run: docker build -t ${{ secrets.DOCKER_USER }}/task-backend:latest ./backend
+        run: docker build -t ${{ secrets.DOCKER_USER }}/task-backend:latest ./mini-task-manager/backend
 
       - name: Build frontend image
-        run: docker build -t ${{ secrets.DOCKER_USER }}/task-frontend:latest ./frontend
+        run: docker build -t ${{ secrets.DOCKER_USER }}/task-frontend:latest ./mini-task-manager/frontend
 
       - name: Push backend image
         run: docker push ${{ secrets.DOCKER_USER }}/task-backend:latest

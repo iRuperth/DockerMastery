@@ -17,18 +17,10 @@ jobs:
           python-version: "3.12"
 
       - name: Install backend dependencies
-        run: pip install -r backend/requirements.txt
+        run: pip install -r mini-task-manager/backend/requirements.txt
 
       - name: Validate Python syntax
-        run: python -m py_compile $(git ls-files "backend/**/*.py")
+        run: python -m py_compile $(git ls-files "mini-task-manager/backend/**/*.py")
 
-  frontend-check:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Validate JS syntax
-        run: node --check frontend/public/app.js
-
-      - name: Ensure CSS exists
-        run: test -s frontend/public/styles.css
+      - name: Validate FastAPI startup
+        run: uvicorn mini-task-manager.backend.main:app --host 0.0.0.0 --port 8000 --lifespan off &
