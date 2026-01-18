@@ -1,0 +1,34 @@
+name: CI - Basic Project Validation
+
+on:
+  push:
+    branches: [ "main", "dev" ]
+  pull_request:
+
+jobs:
+  backend-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+
+      - name: Install backend dependencies
+        run: pip install -r backend/requirements.txt
+
+      - name: Validate Python syntax
+        run: python -m py_compile $(git ls-files "backend/**/*.py")
+
+  frontend-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Validate JS syntax
+        run: node --check frontend/public/app.js
+
+      - name: Ensure CSS exists
+        run: test -s frontend/public/styles.css
